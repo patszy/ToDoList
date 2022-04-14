@@ -1,8 +1,8 @@
 ## Table of Contents
-* [General info] (#todolist)
-* [Requirements] (#requirements)
-* [Technologies] (#technologies)
-* [Setup] (#setup)
+* [General info](#todolist)
+* [Requirements](#requirements)
+* [Technologies](#technologies)
+* [Setup](#setup)
 
 ## ToDoList
 This project is simple web app with data base using mostly PHP.
