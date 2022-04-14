@@ -16,7 +16,7 @@ This project is simple web app with data base using mostly PHP.
   - Paging
   - AJAX
  
-##Technologies
+## Technologies
 Project is created with
 * XAMPP version
 * Medoo version
@@ -24,4 +24,6 @@ Project is created with
 * PHP version
 * MySQL
 * AJAX
-##Setup
+
+## Setup
+To run this project use Xampp. Create db from file and run localhost/todolist.
