@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.1.0, created on 2022-05-07 16:21:15
-  from '/Applications/XAMPP/xamppfiles/htdocs/ToDoList/app/views/LoginView.tpl' */
+/* Smarty version 4.1.0, created on 2022-05-07 16:21:45
+  from '/Applications/XAMPP/xamppfiles/htdocs/ToDoList/app/views/RegisterView.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.1.0',
-  'unifunc' => 'content_6276805b8400a4_20617559',
+  'unifunc' => 'content_62768079aaca39_01271646',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
-    'c282769425591e5b98c341dcccda6e02a632d833' => 
+    '0209f2cbcb6103fce5b7cae855201fdfba28c0f8' => 
     array (
-      0 => '/Applications/XAMPP/xamppfiles/htdocs/ToDoList/app/views/LoginView.tpl',
-      1 => 1651933168,
+      0 => '/Applications/XAMPP/xamppfiles/htdocs/ToDoList/app/views/RegisterView.tpl',
+      1 => 1651933304,
       2 => 'file',
     ),
   ),
@@ -21,43 +21,46 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:messages.tpl' => 1,
   ),
 ),false)) {
-function content_6276805b8400a4_20617559 (Smarty_Internal_Template $_smarty_tpl) {
+function content_62768079aaca39_01271646 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_loadInheritance();
 $_smarty_tpl->inheritance->init($_smarty_tpl, true);
 ?>
 
 
 <?php 
-$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_10041565266276805b834fb2_98409846', 'top');
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_36056609662768079aa1984_39243293', 'top');
 ?>
 
 <?php $_smarty_tpl->inheritance->endChild($_smarty_tpl, "main.tpl");
 }
 /* {block 'top'} */
-class Block_10041565266276805b834fb2_98409846 extends Smarty_Internal_Block
+class Block_36056609662768079aa1984_39243293 extends Smarty_Internal_Block
 {
 public $subBlocks = array (
   'top' => 
   array (
-    0 => 'Block_10041565266276805b834fb2_98409846',
+    0 => 'Block_36056609662768079aa1984_39243293',
   ),
 );
 public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
 ?>
 
 <form action="<?php echo $_smarty_tpl->tpl_vars['conf']->value->action_root;?>
-login" method="post" class="todo-form">
+register" method="post" class="todo-form">
 	<label class="todo-form-label">
 		<input class="todo-form-message" type="text" name="login" title="Login" placeholder="Login"/>
 	</label>
 	<label class="todo-form-label">
 		<input class="todo-form-message" type="password" name="password" title="Password" placeholder="Password"/>
 	</label>
+	<label class="todo-form-label">
+		<input class="todo-form-message" type="password" name="password2" title="Repeat password" placeholder="Repeat password"/>
+	</label>
 	
 	<div>
-		<button type="submit" value="Login" class="button todo-form-button" title="Login">Login</button>
-		<a href="<?php echo $_smarty_tpl->tpl_vars['conf']->value->action_root;?>
-registerShow" class="button todo-form-button" title="Register">Register</a>
+		<button type="submit" class="button todo-form-button" title="Register">Register</button>
+		<a class="button todo-form-button" title="Login" href="<?php echo $_smarty_tpl->tpl_vars['conf']->value->action_root;?>
+loginShow">Login</a>
 	</div> 
 </form>
 

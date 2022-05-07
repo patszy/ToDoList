@@ -2,50 +2,53 @@
 
 {block name=top}
 
-<div class="bottom-margin">
-<form class="pure-form pure-form-stacked" action="{$conf->action_url}todoList">
-	<legend>Opcje wyszukiwania</legend>
-	<fieldset>
-		<input type="text" placeholder="Tytuł" name="sf_title" value="{$searchForm->title}" /><br />
-		<button type="submit" class="pure-button pure-button-primary">Filtruj</button>
-	</fieldset>
-</form>
-</div>	
+        <section class="todo-list-container">
+            <header class="todo-list-header">
+                <h1 class="todo-list-title">
+                    Task list
+                </h1>
+				
+				<a class="button button--add" href="{$conf->action_root}todoNew">Add Task</a>
+				
+				<div class="task-list-bar">	
+                	<form class="todo-list-search-form" action="{$conf->action_url}todoList">
+                    	<input type="search" placeholder="Task Title" name="sf_title" value="{$searchForm->title}" class="todo-list-search">
+						<button type="submit" class="button button--search"   title="Search item">
+							<i class="fa-solid fa-magnifying-glass"></i>
+						</button>
+                	</form>
+				</div>
+            </header>
 
-{/block}
+            <div class="todo-list" id="tab_people">
+				{foreach $lists as $l}
+				{strip}
+					<div class="todo-item">
+						<div class="todo-item-bar">
+							<h3 class="todo-item-date">{$l["deadline"]}</h3>
+							<a class="todo-item-delete" href="{$conf->action_url}todoDelete/{$l['id_item']}" title="Delete item">
+								<i class="fas fa-times-circle"></i>
+							</a>
+						</div>
+						<div class="todo-item-header">
+							<h3 class="todo-item-title">
+								{$l["title"]}
+							</h3>
+							<a class="todo-item-edit" href="{$conf->action_url}todoEdit/{$l['id_item']}"  title="Edit item">
+								<i class="fa-solid fa-pen-to-square"></i>
+							</a>
+						</div>
+						<p class="todo-item-text">
+							{$l["message"]}</br>
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio laudantium quasi blanditiis enim molestias explicabo id totam veniam corporis maiores.
+						</p>
+						
+					</div>
+				{/strip}
+				{/foreach}
+            </div>
+        </section>
 
-{block name=bottom}
-
-<div class="bottom-margin">
-<a class="pure-button button-success" href="{$conf->action_root}todoNew">Nowa wiadomość +</a>
-</div>	
-
-<table id="tab_people" class="pure-table pure-table-bordered">
-<thead>
-	<tr>
-		<th>Tytuł</th>
-		<th>Wiadomość</th>
-		<th>Deadline</th>
-		<th>Edycja</th>
-	</tr>
-</thead>
-<tbody>
-{foreach $lists as $l}
-{strip}
-	<tr>
-		<td>{$l["title"]}</td>
-		<td>{$l["message"]}</td>
-		<td>{$l["deadline"]}</td>
-		<td>
-			<a class="button-small pure-button button-secondary" href="{$conf->action_url}todoEdit/{$l['id_item']}">Edytuj</a>
-			&nbsp;
-			<a class="button-small pure-button button-warning" href="{$conf->action_url}todoDelete/{$l['id_item']}">Usuń</a>
-		</td>
-	</tr>
-{/strip}
-{/foreach}
-</tbody>
-</table>
 {include file='messages.tpl'}
 
 {/block}

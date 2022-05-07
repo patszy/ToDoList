@@ -1,24 +1,20 @@
 {extends file="main.tpl"}
 
 {block name=top}
-<form action="{$conf->action_root}login" method="post" class="pure-form pure-form-aligned bottom-margin">
-	<legend>Logowanie do systemu</legend>
-	<fieldset>
-        <div class="pure-control-group">
-			<label>Login:
-				<input type="text" name="login"/>
-			</label>
-		</div>
-        <div class="pure-control-group">
-			<label>Password:
-				<input type="password" name="password" /><br />
-			</label>
-		</div>
-		<div class="pure-controls">
-			<input type="submit" value="zaloguj" class="pure-button pure-button-primary"/>
-		</div>
-	</fieldset>
-</form>	
+<form action="{$conf->action_root}login" method="post" class="todo-form">
+	<label class="todo-form-label">
+		<input class="todo-form-message" type="text" name="login" title="Login" placeholder="Login"/>
+	</label>
+	<label class="todo-form-label">
+		<input class="todo-form-message" type="password" name="password" title="Password" placeholder="Password"/>
+	</label>
+	
+	<div>
+		<button type="submit" value="Login" class="button todo-form-button" title="Login">Login</button>
+		<a href="{$conf->action_root}registerShow" class="button todo-form-button" title="Register">Register</a>
+	</div> 
+</form>
+
 {include file='messages.tpl'}
 
 {/block}

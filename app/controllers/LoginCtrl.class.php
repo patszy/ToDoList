@@ -22,30 +22,32 @@ class LoginCtrl {
         $this->form->password = ParamUtils::getFromRequest('password');
 
         //nie ma sensu walidować dalej, gdy brak parametrów
-        if (!isset($this->form->login))
-            return false;
+        if (!isset($this->form->login)) return false;
 
-        // sprawdzenie, czy potrzebne wartości zostały przekazane
-        if (empty($this->form->login)) {
-            Utils::addErrorMessage('Nie podano loginu');
-        }
-        if (empty($this->form->password)) {
-            Utils::addErrorMessage('Nie podano hasła');
+        try {
+            // 2. odczyt z bazy danych osoby o podanym ID (tylko jednego rekordu)
+            $record = App::getDB()->get("user", "*", [
+                "login" => $this->form->login
+            ]);
+
+            if (empty($this->form->login)) {
+                Utils::addErrorMessage('Nie podano loginu');
+            }
+            if (empty($this->form->password)) {
+                Utils::addErrorMessage('Nie podano hasła');
+            }
+            
+            if($record['login'] == $this->form->login && $record['password'] == $this->form->password) {
+                RoleUtils::addRole('admin');//odczyt roli z BD.
+            } else Utils::addErrorMessage('Niepoprawny login lub hasło');
+        } catch (\PDOException $e) {
+            Utils::addErrorMessage('Wystąpił błąd podczas odczytu rekordu');
+            if (App::getConf()->debug)
+                Utils::addErrorMessage($e->getMessage());
         }
 
-        //nie ma sensu walidować dalej, gdy brak wartości
         if (App::getMessages()->isError())
             return false;
-
-        // sprawdzenie, czy dane logowania poprawne
-        // (takie informacje najczęściej przechowuje się w bazie danych)
-        if ($this->form->login == "admin" && $this->form->password == "admin") {
-            RoleUtils::addRole('admin');
-        } else if ($this->form->login == "user" && $this->form->password == "user") {
-            RoleUtils::addRole('user');
-        } else {
-            Utils::addErrorMessage('Niepoprawny login lub hasło');
-        }
 
         return !App::getMessages()->isError();
     }

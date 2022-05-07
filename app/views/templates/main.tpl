@@ -7,26 +7,29 @@
 	<meta name="author" description="Patryk Szymczyk">
 	<link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css"
 		integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 	<link rel="stylesheet" href="{$conf->app_url}/css/style.css">
 </head>
 
 <body style="margin: 20px;">
 
-<div class="pure-menu pure-menu-horizontal bottom-margin">
-	<a href="{$conf->action_root}todoList" class="pure-menu-heading pure-menu-link">Lista</a>
-{if count($conf->roles)>0}
-	<a href="{$conf->action_root}logout" class="pure-menu-heading pure-menu-link">Wyloguj</a>
-{else}	
-	<a href="{$conf->action_root}loginShow" class="pure-menu-heading pure-menu-link">Zaloguj</a>
-{/if}
-</div>
+	<main class="todo-container">
+		<div class="todo-menu-bar">
+			<a href="{$conf->action_root}todoList" class="button button--menu">Lista</a>
+			{if count($conf->roles)>0}
+				<a href="{$conf->action_root}logout" class="button button--menu">Wyloguj</a>
+			{else}	
+				<a href="{$conf->action_root}loginShow" class="button button--menu">Zaloguj</a>
+			{/if}
+		</div>
 
-{block name=top} {/block}
+		{block name=top} {/block}
 
-{block name=messages} {/block}
+		{block name=messages} {/block}
 
-{block name=bottom} {/block}
+		{block name=bottom} {/block}
 
+    </main>
 </body>
 
 </html>
