@@ -20,14 +20,10 @@ class RegisterCtrl {
     public function validate() {
         $this->form->login = ParamUtils::getFromRequest('login');
         $this->form->password = ParamUtils::getFromRequest('password');
-        $this->form->password2 = ParamUtils::getFromRequest('password');
+        $this->form->password2 = ParamUtils::getFromRequest('password2');
 
         //nie ma sensu walidować dalej, gdy brak parametrów
         if (!isset($this->form->login)) return false;
-
-        if($this->form->password != $this->form->password2) {
-            Utils::addErrorMessage('Hasła nie są indentyczne.');
-        }
 
         try {
             $record = App::getDB()->get("user", "*", [
@@ -40,15 +36,38 @@ class RegisterCtrl {
             if (empty($this->form->login)) {
                 Utils::addErrorMessage('Nie podano loginu.');
             }
-            if (empty($this->form->password)) {
+            if (empty($this->form->password) || empty($this->form->password2)) {
                 Utils::addErrorMessage('Nie podano hasła.');
             }
+            if($this->form->password != $this->form->password2) {
+                Utils::addErrorMessage('Hasła nie są indentyczne.');
+            }
             
-            if($record['login'] == $this->form->login && $record['password'] == $this->form->password) {
-                RoleUtils::addRole('admin');//odczyt roli z BD.
-            } else Utils::addErrorMessage('Niepoprawny login lub hasło');
+            if(!App::getMessages()->isError()) {
+                $role = App::getDB()->get("role", "*", [
+                    "name" => 'user'
+                ]);
+                if(empty($role['name'])){
+                    Utils::addErrorMessage('Wystąpił błąd podczas odczytywania uprawnień.');
+                } else {
+                    App::getDB()->insert("user", [
+                        "login" => $this->form->login,
+                        "password" => $this->form->password,
+                        "id_list" => '1'
+                    ]);
+                    Utils::addInfoMessage('Zarejestrowano pomyślnie.');
+                    $record = App::getDB()->get("user", "*", [
+                        "name" => $this->form->login
+                    ]);
+                    App::getDB()->insert("user_role", [
+                        "id_user" => $record['id_user'],
+                        "id_role" => $role['id_role']
+                    ]);
+                    Utils::addInfoMessage('Zarejestrowano pomyślnie.');
+                }  
+            }
         } catch (\PDOException $e) {
-            Utils::addErrorMessage('Wystąpił błąd podczas odczytu rekordu');
+            Utils::addErrorMessage('Wystąpił błąd podczas rejestracji.');
             if (App::getConf()->debug)
                 Utils::addErrorMessage($e->getMessage());
         }

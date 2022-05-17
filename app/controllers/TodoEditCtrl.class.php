@@ -20,10 +20,14 @@ class TodoEditCtrl {
     // Walidacja danych przed zapisem (nowe dane lub edycja).
     public function validateSave() {
         //0. Pobranie parametrów z walidacją
-        $this->form->id = ParamUtils::getFromRequest('id',true,'Błędne wywołanie aplikacji');
-		$this->form->title = ParamUtils::getFromRequest('title',true,'Błędne wywołanie aplikacji');
-		$this->form->message = ParamUtils::getFromRequest('message',true,'Błędne wywołanie aplikacji');
-		$this->form->deadline = ParamUtils::getFromRequest('deadline',true,'Błędne wywołanie aplikacji');
+        $this->form->id = ParamUtils::getFromRequest('id',true,'Błędne wywołanie aplikacji 1');
+		$this->form->title = ParamUtils::getFromRequest('title',true,'Błędne wywołanie aplikacji 2');
+		$this->form->message = ParamUtils::getFromRequest('message',true,'Błędne wywołanie aplikacji 3');
+		$this->form->deadline = ParamUtils::getFromRequest('deadline',true,'Błędne wywołanie aplikacji 4');
+
+        // if (App::getConf()->debug){
+
+        // }
 
         if (App::getMessages()->isError()) return false;
 

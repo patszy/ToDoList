@@ -2,6 +2,7 @@
 
 {block name=top}
 <form class="todo-form" action="{$conf->action_root}todoSave" method="post">
+        <input type="hidden" name="id" value="{$form->id}" title="Title">
     <label class="todo-form-label">Title
         <input class="todo-form-message" type="text" placeholder="Title" name="title" value="{$form->title}" title="Title">
     </label>
