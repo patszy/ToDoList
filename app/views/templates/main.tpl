@@ -21,6 +21,9 @@
 			{else}	
 				<a href="{$conf->action_root}loginShow" class="button button--menu">Zaloguj</a>
 			{/if}
+			{if $conf->roles['admin']}
+				<a href="{$conf->action_root}userList" class="button button--menu">Admin Panel</a>
+			{/if}
 		</div>
 
 		{block name=top} {/block}

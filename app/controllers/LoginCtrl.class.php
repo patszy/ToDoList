@@ -26,7 +26,7 @@ class LoginCtrl {
 
         try {
             // 2. odczyt z bazy danych osoby o podanym ID (tylko jednego rekordu)
-            $record = App::getDB()->get("user", "*", [
+            $user = App::getDB()->get("user", "*", [
                 "login" => $this->form->login
             ]);
 
@@ -37,11 +37,17 @@ class LoginCtrl {
                 Utils::addErrorMessage('Nie podano hasła');
             }
             
-            if($record['login'] == $this->form->login && $record['password'] == $this->form->password) {
-                RoleUtils::addRole('admin');//odczyt roli z BD.
-            } else Utils::addErrorMessage('Niepoprawny login lub hasło');
+            if($user['login'] == $this->form->login && $user['password'] == $this->form->password) {
+                $user_role = App::getDB()->get("user_role", "*", [
+                    "id_user" => $user['id_user']
+                ]);
+                $role = App::getDB()->get("role", "*", [
+                    "id_role" => $user_role['id_role']
+                ]);
+                RoleUtils::addRole($role['name']);
+            } else Utils::addErrorMessage('Niepoprawny login lub hasło.');
         } catch (\PDOException $e) {
-            Utils::addErrorMessage('Wystąpił błąd podczas odczytu rekordu');
+            Utils::addErrorMessage('Wystąpił błąd podczas logowania.');
             if (App::getConf()->debug)
                 Utils::addErrorMessage($e->getMessage());
         }
@@ -69,6 +75,7 @@ class LoginCtrl {
 
     public function action_logout() {
         // 1. zakończenie sesji
+        App::getConf()->roles = '';
         session_destroy();
         // 2. idź na stronę główną - system automatycznie przekieruje do strony logowania
         App::getRouter()->redirectTo('todoList');
