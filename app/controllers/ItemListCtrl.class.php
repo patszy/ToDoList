@@ -6,21 +6,25 @@ use core\App;
 use core\Utils;
 use core\ParamUtils;
 use app\forms\AllSearchForm;
+use app\forms\TodoEditForm;
 
-class TodoListCtrl {
+class ItemListCtrl {
 
     private $form; //dane formularza wyszukiwania
     private $records; //rekordy pobrane z bazy danych
+    private $list; //rekordy pobrane z bazy danych
 
     public function __construct() {
         //stworzenie potrzebnych obiektów
         $this->form = new AllSearchForm();
+        $this->list = new TodoEditForm();
     }
 
     public function validate() {
         // 1. sprawdzenie, czy parametry zostały przekazane
         // - nie trzeba sprawdzać
         $this->form->search = ParamUtils::getFromRequest('sf_title');
+        $this->list->id = ParamUtils::getFromCleanURL(1, true, 'Błędne wywołanie aplikacji');
 
         // 2. sprawdzenie poprawności przekazanych parametrów
         // - nie trzeba sprawdzać
@@ -28,15 +32,15 @@ class TodoListCtrl {
         return !App::getMessages()->isError();
     }
 
-    public function action_todoList() {
+    public function action_itemList() {
         // 1. Walidacja danych formularza (z pobraniem)
         // - W tej aplikacji walidacja nie jest potrzebna, ponieważ nie wystąpią błedy podczas podawania nazwiska.
         //   Jednak pozostawiono ją, ponieważ gdyby uzytkownik wprowadzał np. datę, lub wartość numeryczną, to trzeba
         //   odpowiednio zareagować wyświetlając odpowiednią informację (poprzez obiekt wiadomości Messages)
         $this->validate();
-
         // 2. Przygotowanie mapy z parametrami wyszukiwania (nazwa_kolumny => wartość)
         $search_params = []; //przygotowanie pustej struktury (aby była dostępna nawet gdy nie będzie zawierała wierszy)
+        $search_params['id_list'] = $this->list->id;
         if (isset($this->form->search) && strlen($this->form->search) > 0) {
             $search_params['title[~]'] = '%'.$this->form->search.'%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
         }
@@ -51,8 +55,10 @@ class TodoListCtrl {
         } else {
             $where = &$search_params;
         }
+        
         //dodanie frazy sortującej po nazwisku
-        $where ["ORDER"] = "title";
+        // $where ["AND"] = &$search_params;
+        // $where ["ORDER"] = "title";
         //wykonanie zapytania
 
         try {
@@ -61,7 +67,8 @@ class TodoListCtrl {
 					"title",
 					"message",
 					"deadline",
-            ], $where);
+                ], $where);        
+            // ], ["id_list" => $this->form->id]);
         } catch (\PDOException $e) {
             Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
             if (App::getConf()->debug)
@@ -70,8 +77,9 @@ class TodoListCtrl {
 
         // 4. wygeneruj widok
         App::getSmarty()->assign('searchForm', $this->form); // dane formularza (wyszukiwania w tym wypadku)
-        App::getSmarty()->assign('lists', $this->records);  // lista rekordów z bazy danych
-        App::getSmarty()->display('TodoList.tpl');
+        App::getSmarty()->assign('items', $this->records);  // lista rekordów z bazy danych
+        App::getSmarty()->assign('id_list', $this->list->id);  // lista rekordów z bazy danych
+        App::getSmarty()->display('ItemList.tpl');
     }
 
 }

@@ -2,7 +2,7 @@
 
 namespace app\forms;
 
-class TodoEditForm {
+class ItemEditForm {
 	public $id;
 	public $title;
 	public $message;

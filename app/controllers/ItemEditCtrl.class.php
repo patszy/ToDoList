@@ -6,15 +6,15 @@ use core\App;
 use core\Utils;
 use core\ParamUtils;
 use core\Validator;
-use app\forms\TodoEditForm;
+use app\forms\ItemEditForm;
 
-class TodoEditCtrl {
+class ItemEditCtrl {
 
     private $form; //dane formularza
 
     public function __construct() {
         //stworzenie potrzebnych obiektów
-        $this->form = new TodoEditForm();
+        $this->form = new ItemEditForm();
     }
 
     // Walidacja danych przed zapisem (nowe dane lub edycja).
@@ -58,12 +58,12 @@ class TodoEditCtrl {
         return !App::getMessages()->isError();
     }
 
-    public function action_todoNew() {
+    public function action_itemNew() {
         $this->generateView();
     }
 
     //wysiweltenie rekordu do edycji wskazanego parametrem 'id'
-    public function action_todoEdit() {
+    public function action_itemEdit() {
         // 1. walidacja id osoby do edycji
         if ($this->validateEdit()) {
             try {
@@ -87,7 +87,7 @@ class TodoEditCtrl {
         $this->generateView();
     }
 
-    public function action_todoDelete() {
+    public function action_itemDelete() {
         // 1. walidacja id osoby do usuniecia
         if ($this->validateEdit()) {
 
@@ -105,10 +105,10 @@ class TodoEditCtrl {
         }
 
         // 3. Przekierowanie na stronę listy osób
-        App::getRouter()->forwardTo('todoList');
+        App::getRouter()->forwardTo('itemList');
     }
 
-    public function action_todoSave() {
+    public function action_itemSave() {
 
         // 1. Walidacja danych formularza (z pobraniem)
         if ($this->validateSave()) {
@@ -149,7 +149,7 @@ class TodoEditCtrl {
             }
 
             // 3b. Po zapisie przejdź na stronę listy osób (w ramach tego samego żądania http)
-            App::getRouter()->forwardTo('todoList');
+            App::getRouter()->forwardTo('itemList');
         } else {
             // 3c. Gdy błąd walidacji to pozostań na stronie
             $this->generateView();
@@ -158,7 +158,7 @@ class TodoEditCtrl {
 
     public function generateView() {
         App::getSmarty()->assign('form', $this->form); // dane formularza dla widoku
-        App::getSmarty()->display('TodoEdit.tpl');
+        App::getSmarty()->display('ItemEdit.tpl');
     }
 
 }
