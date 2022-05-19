@@ -7,7 +7,7 @@ use core\Utils;
 use core\ParamUtils;
 use app\forms\AllSearchForm;
 
-class UserListCtrl {
+class TodoListCtrl {
 
     private $form; //dane formularza wyszukiwania
     private $records; //rekordy pobrane z bazy danych
@@ -20,7 +20,7 @@ class UserListCtrl {
     public function validate() {
         // 1. sprawdzenie, czy parametry zostały przekazane
         // - nie trzeba sprawdzać
-        $this->form->search = ParamUtils::getFromRequest('sf_login');
+        $this->form->search = ParamUtils::getFromRequest('sf_title');
 
         // 2. sprawdzenie poprawności przekazanych parametrów
         // - nie trzeba sprawdzać
@@ -28,7 +28,7 @@ class UserListCtrl {
         return !App::getMessages()->isError();
     }
 
-    public function action_userList() {
+    public function action_todoList() {
         // 1. Walidacja danych formularza (z pobraniem)
         // - W tej aplikacji walidacja nie jest potrzebna, ponieważ nie wystąpią błedy podczas podawania nazwiska.
         //   Jednak pozostawiono ją, ponieważ gdyby uzytkownik wprowadzał np. datę, lub wartość numeryczną, to trzeba
@@ -38,7 +38,7 @@ class UserListCtrl {
         // 2. Przygotowanie mapy z parametrami wyszukiwania (nazwa_kolumny => wartość)
         $search_params = []; //przygotowanie pustej struktury (aby była dostępna nawet gdy nie będzie zawierała wierszy)
         if (isset($this->form->search) && strlen($this->form->search) > 0) {
-            $search_params['login[~]'] = '%'.$this->form->search.'%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
+            $search_params['title[~]'] = '%'.$this->form->search.'%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
         }
 
         // 3. Pobranie listy rekordów z bazy danych
@@ -52,13 +52,15 @@ class UserListCtrl {
             $where = &$search_params;
         }
         //dodanie frazy sortującej po nazwisku
-        $where ["ORDER"] = "login";
+        $where ["ORDER"] = "title";
         //wykonanie zapytania
 
         try {
-            $this->records = App::getDB()->select("user", [
-                    "id_user",
-					"login",
+            $this->records = App::getDB()->select("todoitem", [
+                    "id_item",
+					"title",
+					"message",
+					"deadline",
             ], $where);
         } catch (\PDOException $e) {
             Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
@@ -68,8 +70,8 @@ class UserListCtrl {
 
         // 4. wygeneruj widok
         App::getSmarty()->assign('searchForm', $this->form); // dane formularza (wyszukiwania w tym wypadku)
-        App::getSmarty()->assign('users', $this->records);  // lista rekordów z bazy danych
-        App::getSmarty()->display('UserList.tpl');
+        App::getSmarty()->assign('lists', $this->records);  // lista rekordów z bazy danych
+        App::getSmarty()->display('TodoList.tpl');
     }
 
 }

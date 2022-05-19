@@ -22,7 +22,8 @@ class TodoEditCtrl {
         //0. Pobranie parametrów z walidacją
         $this->form->id = ParamUtils::getFromRequest('id',true,'Błędne wywołanie aplikacji 1');
 		$this->form->title = ParamUtils::getFromRequest('title',true,'Błędne wywołanie aplikacji 2');
-		$this->form->date = ParamUtils::getFromRequest('deadline',true,'Błędne wywołanie aplikacji 4');
+		$this->form->message = ParamUtils::getFromRequest('message',true,'Błędne wywołanie aplikacji 3');
+		$this->form->deadline = ParamUtils::getFromRequest('deadline',true,'Błędne wywołanie aplikacji 4');
 
         // if (App::getConf()->debug){
 
@@ -34,7 +35,10 @@ class TodoEditCtrl {
         if (empty(trim($this->form->title))) {
             Utils::addErrorMessage('Wprowadź tytuł.');
         }
-        if (empty(trim($this->form->date))) {
+        if (empty(trim($this->form->message))) {
+            Utils::addErrorMessage('Wprowadź wiadmość.');
+        }
+        if (empty(trim($this->form->deadline))) {
             Utils::addErrorMessage('Wprowadź deadline.');
         }
 
@@ -64,13 +68,14 @@ class TodoEditCtrl {
         if ($this->validateEdit()) {
             try {
                 // 2. odczyt z bazy danych osoby o podanym ID (tylko jednego rekordu)
-                $record = App::getDB()->get("todolist", "*", [
-                    "id_list" => $this->form->id
+                $record = App::getDB()->get("todoitem", "*", [
+                    "id_item" => $this->form->id
                 ]);
                 // 2.1 jeśli osoba istnieje to wpisz dane do obiektu formularza
-                $this->form->id = $record['id_list'];
+                $this->form->id = $record['id_item'];
 				$this->form->title = $record['title'];
-				$this->form->date = $record['date'];
+				$this->form->message = $record['message'];
+				$this->form->deadline = $record['deadline'];
             } catch (\PDOException $e) {
                 Utils::addErrorMessage('Wystąpił błąd podczas odczytu rekordu');
                 if (App::getConf()->debug)
@@ -88,8 +93,8 @@ class TodoEditCtrl {
 
             try {
                 // 2. usunięcie rekordu
-                App::getDB()->delete("todolist", [
-                    "id_list" => $this->form->id
+                App::getDB()->delete("todoitem", [
+                    "id_item" => $this->form->id
                 ]);
                 Utils::addInfoMessage('Pomyślnie usunięto rekord');
             } catch (\PDOException $e) {
@@ -113,11 +118,12 @@ class TodoEditCtrl {
                 //2.1 Nowy rekord
                 if ($this->form->id == '') {
                     //sprawdź liczebność rekordów - nie pozwalaj przekroczyć 20
-                    $count = App::getDB()->count("todolist");
+                    $count = App::getDB()->count("todoitem");
                     if ($count <= 20) {
-                        App::getDB()->insert("todolist", [
+                        App::getDB()->insert("todoitem", [
                             "title" => $this->form->title,
-							"date" => $this->form->date
+							"message" => $this->form->message,
+							"deadline" => $this->form->deadline
                         ]);
                     } else { //za dużo rekordów
                         // Gdy za dużo rekordów to pozostań na stronie
@@ -127,11 +133,12 @@ class TodoEditCtrl {
                     }
                 } else {
                     //2.2 Edycja rekordu o danym ID
-                    App::getDB()->update("todolist", [
+                    App::getDB()->update("todoitem", [
 						"title" => $this->form->title,
-						"date" => $this->form->date
+						"message" => $this->form->message,
+						"deadline" => $this->form->deadline
 					], [ 
-						"id_list" => $this->form->id
+						"id_item" => $this->form->id
 					]);
                 }
                 Utils::addInfoMessage('Pomyślnie zapisano rekord');

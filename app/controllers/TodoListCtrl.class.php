@@ -5,7 +5,7 @@ namespace app\controllers;
 use core\App;
 use core\Utils;
 use core\ParamUtils;
-use app\forms\TodoSearchForm;
+use app\forms\AllSearchForm;
 
 class TodoListCtrl {
 
@@ -14,13 +14,13 @@ class TodoListCtrl {
 
     public function __construct() {
         //stworzenie potrzebnych obiektów
-        $this->form = new TodoSearchForm();
+        $this->form = new AllSearchForm();
     }
 
     public function validate() {
         // 1. sprawdzenie, czy parametry zostały przekazane
         // - nie trzeba sprawdzać
-        $this->form->title = ParamUtils::getFromRequest('sf_title');
+        $this->form->search = ParamUtils::getFromRequest('sf_title');
 
         // 2. sprawdzenie poprawności przekazanych parametrów
         // - nie trzeba sprawdzać
@@ -37,8 +37,8 @@ class TodoListCtrl {
 
         // 2. Przygotowanie mapy z parametrami wyszukiwania (nazwa_kolumny => wartość)
         $search_params = []; //przygotowanie pustej struktury (aby była dostępna nawet gdy nie będzie zawierała wierszy)
-        if (isset($this->form->title) && strlen($this->form->title) > 0) {
-            $search_params['title[~]'] = '%'.$this->form->title.'%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
+        if (isset($this->form->search) && strlen($this->form->search) > 0) {
+            $search_params['title[~]'] = '%'.$this->form->search.'%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
         }
 
         // 3. Pobranie listy rekordów z bazy danych
@@ -56,11 +56,10 @@ class TodoListCtrl {
         //wykonanie zapytania
 
         try {
-            $this->records = App::getDB()->select("todoitem", [
-                    "id_item",
+            $this->records = App::getDB()->select("todolist", [
+                    "id_list",
 					"title",
-					"message",
-					"deadline",
+					"date"
             ], $where);
         } catch (\PDOException $e) {
             Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');

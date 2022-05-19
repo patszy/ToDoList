@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.1.0, created on 2022-05-18 13:50:38
+/* Smarty version 4.1.0, created on 2022-05-19 16:12:51
   from '/Applications/XAMPP/xamppfiles/htdocs/ToDoList/app/views/UserList.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.1.0',
-  'unifunc' => 'content_6284dd8ec73e95_59890160',
+  'unifunc' => 'content_62865063d57d05_51044396',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'f3155e774fcf675fcc221796810e995cf121b4d2' => 
     array (
       0 => '/Applications/XAMPP/xamppfiles/htdocs/ToDoList/app/views/UserList.tpl',
-      1 => 1652874637,
+      1 => 1652969560,
       2 => 'file',
     ),
   ),
@@ -21,25 +21,25 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:messages.tpl' => 1,
   ),
 ),false)) {
-function content_6284dd8ec73e95_59890160 (Smarty_Internal_Template $_smarty_tpl) {
+function content_62865063d57d05_51044396 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_loadInheritance();
 $_smarty_tpl->inheritance->init($_smarty_tpl, true);
 ?>
 
 
 <?php 
-$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_5705457936284dd8ec66853_05938242', 'top');
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_194954079262865063d47770_78848889', 'top');
 ?>
 
 <?php $_smarty_tpl->inheritance->endChild($_smarty_tpl, "main.tpl");
 }
 /* {block 'top'} */
-class Block_5705457936284dd8ec66853_05938242 extends Smarty_Internal_Block
+class Block_194954079262865063d47770_78848889 extends Smarty_Internal_Block
 {
 public $subBlocks = array (
   'top' => 
   array (
-    0 => 'Block_5705457936284dd8ec66853_05938242',
+    0 => 'Block_194954079262865063d47770_78848889',
   ),
 );
 public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
@@ -55,7 +55,7 @@ public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
 				<div class="task-list-bar">	
                 	<form class="todo-list-search-form" action="<?php echo $_smarty_tpl->tpl_vars['conf']->value->action_url;?>
 userList">
-                    	<input type="search" placeholder="User Login" name="sf_login" value="<?php echo $_smarty_tpl->tpl_vars['searchForm']->value->login;?>
+                    	<input type="search" placeholder="User Login" name="sf_login" value="<?php echo $_smarty_tpl->tpl_vars['searchForm']->value->search;?>
 " class="todo-list-search">
 						<button type="submit" class="button button--search"   title="Search user">
 							<i class="fa-solid fa-magnifying-glass"></i>

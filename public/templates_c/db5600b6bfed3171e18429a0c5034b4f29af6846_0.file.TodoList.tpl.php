@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.1.0, created on 2022-05-07 16:13:08
+/* Smarty version 4.1.0, created on 2022-05-19 16:22:10
   from '/Applications/XAMPP/xamppfiles/htdocs/ToDoList/app/views/TodoList.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.1.0',
-  'unifunc' => 'content_62767e740c68b6_14203057',
+  'unifunc' => 'content_62865292012db1_63952259',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     'db5600b6bfed3171e18429a0c5034b4f29af6846' => 
     array (
       0 => '/Applications/XAMPP/xamppfiles/htdocs/ToDoList/app/views/TodoList.tpl',
-      1 => 1651932775,
+      1 => 1652970091,
       2 => 'file',
     ),
   ),
@@ -21,25 +21,25 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:messages.tpl' => 1,
   ),
 ),false)) {
-function content_62767e740c68b6_14203057 (Smarty_Internal_Template $_smarty_tpl) {
+function content_62865292012db1_63952259 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_loadInheritance();
 $_smarty_tpl->inheritance->init($_smarty_tpl, true);
 ?>
 
 
 <?php 
-$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_201325293162767e7409d402_80541371', 'top');
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_141744148862865291f2a9d4_56389422', 'top');
 ?>
 
 <?php $_smarty_tpl->inheritance->endChild($_smarty_tpl, "main.tpl");
 }
 /* {block 'top'} */
-class Block_201325293162767e7409d402_80541371 extends Smarty_Internal_Block
+class Block_141744148862865291f2a9d4_56389422 extends Smarty_Internal_Block
 {
 public $subBlocks = array (
   'top' => 
   array (
-    0 => 'Block_201325293162767e7409d402_80541371',
+    0 => 'Block_141744148862865291f2a9d4_56389422',
   ),
 );
 public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
@@ -58,9 +58,9 @@ todoNew">Add Task</a>
 				<div class="task-list-bar">	
                 	<form class="todo-list-search-form" action="<?php echo $_smarty_tpl->tpl_vars['conf']->value->action_url;?>
 todoList">
-                    	<input type="search" placeholder="Task Title" name="sf_title" value="<?php echo $_smarty_tpl->tpl_vars['searchForm']->value->title;?>
+                    	<input type="search" placeholder="Task Title" name="sf_title" value="<?php echo $_smarty_tpl->tpl_vars['searchForm']->value->search;?>
 " class="todo-list-search">
-						<button type="submit" class="button button--search"   title="Search item">
+						<button type="submit" class="button button--search"   title="Search">
 							<i class="fa-solid fa-magnifying-glass"></i>
 						</button>
                 	</form>
@@ -74,14 +74,13 @@ $_smarty_tpl->tpl_vars['l']->do_else = true;
 if ($_from !== null) foreach ($_from as $_smarty_tpl->tpl_vars['l']->value) {
 $_smarty_tpl->tpl_vars['l']->do_else = false;
 ?>
-				<div class="todo-item"><div class="todo-item-bar"><h3 class="todo-item-date"><?php echo $_smarty_tpl->tpl_vars['l']->value["deadline"];?>
+				<div class="todo-item"><div class="todo-item-bar"><h3 class="todo-item-date"><?php echo $_smarty_tpl->tpl_vars['l']->value["date"];?>
 </h3><a class="todo-item-delete" href="<?php echo $_smarty_tpl->tpl_vars['conf']->value->action_url;?>
-todoDelete/<?php echo $_smarty_tpl->tpl_vars['l']->value['id_item'];?>
-" title="Delete item"><i class="fas fa-times-circle"></i></a></div><div class="todo-item-header"><h3 class="todo-item-title"><?php echo $_smarty_tpl->tpl_vars['l']->value["title"];?>
+todoDelete/<?php echo $_smarty_tpl->tpl_vars['l']->value['id_list'];?>
+" title="Delete"><i class="fas fa-times-circle"></i></a></div><div class="todo-item-header"><h3 class="todo-item-title"><?php echo $_smarty_tpl->tpl_vars['l']->value["title"];?>
 </h3><a class="todo-item-edit" href="<?php echo $_smarty_tpl->tpl_vars['conf']->value->action_url;?>
-todoEdit/<?php echo $_smarty_tpl->tpl_vars['l']->value['id_item'];?>
-"  title="Edit item"><i class="fa-solid fa-pen-to-square"></i></a></div><p class="todo-item-text"><?php echo $_smarty_tpl->tpl_vars['l']->value["message"];?>
-</br>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio laudantium quasi blanditiis enim molestias explicabo id totam veniam corporis maiores.</p></div>
+todoEdit/<?php echo $_smarty_tpl->tpl_vars['l']->value['id_list'];?>
+"  title="Edit"><i class="fa-solid fa-pen-to-square"></i></a></div></div>
 				<?php
 }
 $_smarty_tpl->smarty->ext->_foreach->restore($_smarty_tpl, 1);?>

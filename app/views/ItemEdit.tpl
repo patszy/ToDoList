@@ -6,8 +6,11 @@
     <label class="todo-form-label">Title
         <input class="todo-form-message" type="text" placeholder="Title" name="title" value="{$form->title}" title="Title">
     </label>
+    <label class="todo-form-label" for="todoMessage">Task content
+        <textarea class="todo-form-message" name="message" value="{$form->message}" placeholder="Enter task content" title="Message">{$form->message}</textarea>
+    </label>
     <label class="todo-form-label" >Deadline
-        <input class="todo-form-message" type="date" placeholder="Deadline" name="deadline" value="{$form->date}" title="Deadline date">
+        <input class="todo-form-message" type="date" placeholder="Deadline" name="deadline" value="{$form->deadline}" title="Deadline date">
     </label>
 
     <div>

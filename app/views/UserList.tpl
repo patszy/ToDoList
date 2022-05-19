@@ -10,7 +10,7 @@
 				
 				<div class="task-list-bar">	
                 	<form class="todo-list-search-form" action="{$conf->action_url}userList">
-                    	<input type="search" placeholder="User Login" name="sf_login" value="{$searchForm->login}" class="todo-list-search">
+                    	<input type="search" placeholder="User Login" name="sf_login" value="{$searchForm->search}" class="todo-list-search">
 						<button type="submit" class="button button--search"   title="Search user">
 							<i class="fa-solid fa-magnifying-glass"></i>
 						</button>
