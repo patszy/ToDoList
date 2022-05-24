@@ -4,13 +4,11 @@ namespace core;
 
 /**
  * Wrapper class for role utility functions
- *
- * @author Przemysław Kudłacik
  */
 class RoleUtils {
 
     public static function addRole($role) {
-        App::getConf()->roles [$role] = true;
+        App::getConf()->roles ['user'] = $role;
         $_SESSION['_amelia_roles'] = serialize(App::getConf()->roles);
     }
 
@@ -22,7 +20,8 @@ class RoleUtils {
     }
 
     public static function inRole($role) {
-        return isset(App::getConf()->roles[$role]);
+        if(isset(App::getConf()->roles['user'])) return (App::getConf()->roles['user'] == $role);
+        return false;
     }
 
     public static function requireRole($role, $fail_action = null) {

@@ -21,7 +21,7 @@
 			{else}	
 				<a href="{$conf->action_root}loginShow" class="button button--menu">Zaloguj</a>
 			{/if}
-			{if $conf->roles['admin']}
+			{if !empty($conf->roles['user']) && $conf->roles['user']=='admin'}
 				<a href="{$conf->action_root}userList" class="button button--menu">Admin Panel</a>
 			{/if}
 		</div>

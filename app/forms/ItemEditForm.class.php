@@ -7,4 +7,5 @@ class ItemEditForm {
 	public $title;
 	public $message;
 	public $deadline;
+	public $id_list;
 }

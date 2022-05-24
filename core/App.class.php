@@ -4,8 +4,6 @@ namespace core;
 
 /**
  * Application - wrapper for fundamental objects and appliction initalization
- *
- * @author Przemysław Kudłacik
  */
 class App {
 

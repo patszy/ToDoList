@@ -6,8 +6,6 @@ use core\Message;
 
 /**
  * Wrapper for basic parameter utils
- *
- * @author Przemysław Kudłacik
  */
 class ParamUtils {
 

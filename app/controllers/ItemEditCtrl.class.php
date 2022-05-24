@@ -17,6 +17,10 @@ class ItemEditCtrl {
         $this->form = new ItemEditForm();
     }
 
+    public function getListId() {
+        $this->form->id_list = ParamUtils::getFromCleanURL(1, true, 'Błędne wywołanie aplikacji: id list.');
+    }
+
     // Walidacja danych przed zapisem (nowe dane lub edycja).
     public function validateSave() {
         //0. Pobranie parametrów z walidacją
@@ -24,7 +28,6 @@ class ItemEditCtrl {
 		$this->form->title = ParamUtils::getFromRequest('title',true,'Błędne wywołanie aplikacji 2');
 		$this->form->message = ParamUtils::getFromRequest('message',true,'Błędne wywołanie aplikacji 3');
 		$this->form->deadline = ParamUtils::getFromRequest('deadline',true,'Błędne wywołanie aplikacji 4');
-
         // if (App::getConf()->debug){
 
         // }
@@ -54,16 +57,18 @@ class ItemEditCtrl {
     public function validateEdit() {
         //pobierz parametry na potrzeby wyswietlenia danych do edycji
         //z widoku listy osób (parametr jest wymagany)
-        $this->form->id = ParamUtils::getFromCleanURL(1, true, 'Błędne wywołanie aplikacji');
+        $this->form->id = ParamUtils::getFromCleanURL(2, true, 'Błędne wywołanie aplikacji');
         return !App::getMessages()->isError();
     }
 
     public function action_itemNew() {
+        $this->getListId();
         $this->generateView();
     }
 
     //wysiweltenie rekordu do edycji wskazanego parametrem 'id'
     public function action_itemEdit() {
+        $this->getListId();
         // 1. walidacja id osoby do edycji
         if ($this->validateEdit()) {
             try {
@@ -88,6 +93,7 @@ class ItemEditCtrl {
     }
 
     public function action_itemDelete() {
+        $this->getListId();
         // 1. walidacja id osoby do usuniecia
         if ($this->validateEdit()) {
 
@@ -109,7 +115,7 @@ class ItemEditCtrl {
     }
 
     public function action_itemSave() {
-
+        $this->getListId();
         // 1. Walidacja danych formularza (z pobraniem)
         if ($this->validateSave()) {
             // 2. Zapis danych w bazie
@@ -123,7 +129,8 @@ class ItemEditCtrl {
                         App::getDB()->insert("todoitem", [
                             "title" => $this->form->title,
 							"message" => $this->form->message,
-							"deadline" => $this->form->deadline
+							"deadline" => $this->form->deadline,
+                            "id_list" => $this->form->id_list
                         ]);
                     } else { //za dużo rekordów
                         // Gdy za dużo rekordów to pozostań na stronie
@@ -148,7 +155,7 @@ class ItemEditCtrl {
                     Utils::addErrorMessage($e->getMessage());
             }
 
-            // 3b. Po zapisie przejdź na stronę listy osób (w ramach tego samego żądania http)
+            // 3b. Po zapisie przejdź na stronę listy osób (w ramach tego samego żądania http) d d
             App::getRouter()->forwardTo('itemList');
         } else {
             // 3c. Gdy błąd walidacji to pozostań na stronie
@@ -158,6 +165,7 @@ class ItemEditCtrl {
 
     public function generateView() {
         App::getSmarty()->assign('form', $this->form); // dane formularza dla widoku
+        App::getSmarty()->assign('id_list', $this->form->id_list);  // lista rekordów z bazy danych
         App::getSmarty()->display('ItemEdit.tpl');
     }
 

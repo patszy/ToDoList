@@ -37,6 +37,20 @@ class TodoListCtrl {
 
         // 2. Przygotowanie mapy z parametrami wyszukiwania (nazwa_kolumny => wartość)
         $search_params = []; //przygotowanie pustej struktury (aby była dostępna nawet gdy nie będzie zawierała wierszy)
+
+        if(isset(App::getConf()->roles['user'])) {
+            try {
+                $user = App::getDB()->get("user", "*", [
+                    "login" => App::getConf()->roles['user']
+                ]);
+                $search_params['id_user'] = $user['id_user'];
+            } catch (\PDOException $e) {
+                Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
+                if (App::getConf()->debug)
+                    Utils::addErrorMessage($e->getMessage());
+            }
+        } 
+        
         if (isset($this->form->search) && strlen($this->form->search) > 0) {
             $search_params['title[~]'] = '%'.$this->form->search.'%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
         }

@@ -4,8 +4,6 @@ namespace core;
 
 /**
  * Parameter validation tool
- *
- * @author Przemysław Kudłacik
  */
 class Validator {
 

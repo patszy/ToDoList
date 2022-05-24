@@ -4,8 +4,6 @@ namespace core;
 
 /**
  * Wrapper for session tools
- *
- * @author Przemysław Kudłacik
  */
 class SessionUtils {
 

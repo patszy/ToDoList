@@ -1,18 +1,18 @@
 <?php
-/* Smarty version 4.1.0, created on 2022-05-19 22:16:10
+/* Smarty version 4.1.0, created on 2022-05-20 11:17:29
   from '/Applications/XAMPP/xamppfiles/htdocs/ToDoList/app/views/ItemList.tpl' */
 
 /* @var Smarty_Internal_Template $_smarty_tpl */
 if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
   'version' => '4.1.0',
-  'unifunc' => 'content_6286a58a63a723_21785439',
+  'unifunc' => 'content_62875ca9c21e38_80109751',
   'has_nocache_code' => false,
   'file_dependency' => 
   array (
     '92816c89ed978265fe77c52488336a5d43348911' => 
     array (
       0 => '/Applications/XAMPP/xamppfiles/htdocs/ToDoList/app/views/ItemList.tpl',
-      1 => 1652991367,
+      1 => 1653037962,
       2 => 'file',
     ),
   ),
@@ -21,25 +21,25 @@ if ($_smarty_tpl->_decodeProperties($_smarty_tpl, array (
     'file:messages.tpl' => 1,
   ),
 ),false)) {
-function content_6286a58a63a723_21785439 (Smarty_Internal_Template $_smarty_tpl) {
+function content_62875ca9c21e38_80109751 (Smarty_Internal_Template $_smarty_tpl) {
 $_smarty_tpl->_loadInheritance();
 $_smarty_tpl->inheritance->init($_smarty_tpl, true);
 ?>
 
 
 <?php 
-$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_14237735926286a58a6019e1_10175686', 'top');
+$_smarty_tpl->inheritance->instanceBlock($_smarty_tpl, 'Block_213820135262875ca9c134f6_67841451', 'top');
 ?>
 
 <?php $_smarty_tpl->inheritance->endChild($_smarty_tpl, "main.tpl");
 }
 /* {block 'top'} */
-class Block_14237735926286a58a6019e1_10175686 extends Smarty_Internal_Block
+class Block_213820135262875ca9c134f6_67841451 extends Smarty_Internal_Block
 {
 public $subBlocks = array (
   'top' => 
   array (
-    0 => 'Block_14237735926286a58a6019e1_10175686',
+    0 => 'Block_213820135262875ca9c134f6_67841451',
   ),
 );
 public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
@@ -53,9 +53,10 @@ public function callBlock(Smarty_Internal_Template $_smarty_tpl) {
                 </h1>
 				
 				<a class="button button--add" href="<?php echo $_smarty_tpl->tpl_vars['conf']->value->action_root;?>
-itemNew">Add Task</a>
+itemNew/<?php echo $_smarty_tpl->tpl_vars['id_list']->value;?>
+">Add Task</a>
 				
-				<div class="task-list-bar">	
+				<div class="task-list-bar">
                 	<form class="todo-list-search-form" action="<?php echo $_smarty_tpl->tpl_vars['conf']->value->action_url;?>
 itemList/<?php echo $_smarty_tpl->tpl_vars['id_list']->value;?>
 ">
@@ -77,10 +78,12 @@ $_smarty_tpl->tpl_vars['i']->do_else = false;
 ?>
 				<div class="todo-item"><div class="todo-item-bar"><h3 class="todo-item-date"><?php echo $_smarty_tpl->tpl_vars['i']->value["deadline"];?>
 </h3><a class="todo-item-delete" href="<?php echo $_smarty_tpl->tpl_vars['conf']->value->action_url;?>
-itemDelete/<?php echo $_smarty_tpl->tpl_vars['i']->value['id_item'];?>
+itemDelete/<?php echo $_smarty_tpl->tpl_vars['id_list']->value;?>
+/<?php echo $_smarty_tpl->tpl_vars['i']->value['id_item'];?>
 " title="Delete item"><i class="fas fa-times-circle"></i></a></div><div class="todo-item-header"><h3 class="todo-item-title"><?php echo $_smarty_tpl->tpl_vars['i']->value["title"];?>
 </h3><a class="todo-item-edit" href="<?php echo $_smarty_tpl->tpl_vars['conf']->value->action_url;?>
-itemEdit/<?php echo $_smarty_tpl->tpl_vars['i']->value['id_item'];?>
+itemEdit/<?php echo $_smarty_tpl->tpl_vars['id_list']->value;?>
+/<?php echo $_smarty_tpl->tpl_vars['i']->value['id_item'];?>
 "  title="Edit item"><i class="fa-solid fa-pen-to-square"></i></a></div><p class="todo-item-text"><?php echo $_smarty_tpl->tpl_vars['i']->value["message"];?>
 </br></p></div>
 				<?php

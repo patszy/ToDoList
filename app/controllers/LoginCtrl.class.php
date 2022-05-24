@@ -37,6 +37,8 @@ class LoginCtrl {
                 Utils::addErrorMessage('Nie podano hasła');
             }
             
+            if (App::getMessages()->isError()) return false;
+
             if($user['login'] == $this->form->login && $user['password'] == $this->form->password) {
                 $user_role = App::getDB()->get("user_role", "*", [
                     "id_user" => $user['id_user']
@@ -52,8 +54,7 @@ class LoginCtrl {
                 Utils::addErrorMessage($e->getMessage());
         }
 
-        if (App::getMessages()->isError())
-            return false;
+        if (App::getMessages()->isError()) return false;
 
         return !App::getMessages()->isError();
     }

@@ -4,11 +4,15 @@
 
         <section class="todo-list-container">
             <header class="todo-list-header">
-                <h1 class="todo-list-title">
+
+				<h1 class="todo-list-title">
                     Lists
                 </h1>
+
+				{if !empty($conf->roles['user'])}
+					<a class="button button--add" href="{$conf->action_root}todoNew">Add List</a>
+				{/if}
 				
-				<a class="button button--add" href="{$conf->action_root}todoNew">Add List</a>
 				
 				<div class="task-list-bar">	
                 	<form class="todo-list-search-form" action="{$conf->action_url}todoList">
@@ -24,17 +28,27 @@
 				{strip}
 					<div class="todo-item">
 						<div class="todo-item-bar">
-							<a class="todo-item-show" href="{$conf->action_url}itemList/{$l['id_list']}" title="Show"><i class="fa-solid fa-eye"></i></a>
+							{if !empty($conf->roles['user'])}
+								<a class="todo-item-show" href="{$conf->action_url}itemList/{$l['id_list']}" title="Show"><i class="fa-solid fa-eye"></i></a>
+							{/if}
+							
 							<h3 class="todo-item-date">{$l["date"]}</h3>
-							<a class="todo-item-delete" href="{$conf->action_url}todoDelete/{$l['id_list']}" title="Delete">
-								<i class="fas fa-times-circle"></i>
-							</a>
+
+							{if !empty($conf->roles['user'])}
+								<a class="todo-item-delete" href="{$conf->action_url}todoDelete/{$l['id_list']}" title="Delete">
+									<i class="fas fa-times-circle"></i>
+								</a>
+							{/if}
+							
 						</div>
 						<div class="todo-item-header">
 							<h3 class="todo-item-title">{$l["title"]}</h3>
-							<a class="todo-item-edit" href="{$conf->action_url}todoEdit/{$l['id_list']}"  title="Edit">
-								<i class="fa-solid fa-pen-to-square"></i>
-							</a>
+							{if !empty($conf->roles['user'])}
+								<a class="todo-item-edit" href="{$conf->action_url}todoEdit/{$l['id_list']}"  title="Edit">
+									<i class="fa-solid fa-pen-to-square"></i>
+								</a>
+							{/if}
+							
 						</div>						
 					</div>
 				{/strip}

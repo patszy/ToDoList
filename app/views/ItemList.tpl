@@ -8,9 +8,9 @@
                     Tasks
                 </h1>
 				
-				<a class="button button--add" href="{$conf->action_root}itemNew">Add Task</a>
+				<a class="button button--add" href="{$conf->action_root}itemNew/{$id_list}">Add Task</a>
 				
-				<div class="task-list-bar">	
+				<div class="task-list-bar">
                 	<form class="todo-list-search-form" action="{$conf->action_url}itemList/{$id_list}">
                     	<input type="search" placeholder="Task Title" name="sf_title" value="{$searchForm->search}" class="todo-list-search">
 						<button type="submit" class="button button--search"   title="Search item">
@@ -26,13 +26,13 @@
 					<div class="todo-item">
 						<div class="todo-item-bar">
 							<h3 class="todo-item-date">{$i["deadline"]}</h3>
-							<a class="todo-item-delete" href="{$conf->action_url}itemDelete/{$i['id_item']}" title="Delete item">
+							<a class="todo-item-delete" href="{$conf->action_url}itemDelete/{$id_list}/{$i['id_item']}" title="Delete item">
 								<i class="fas fa-times-circle"></i>
 							</a>
 						</div>
 						<div class="todo-item-header">
 							<h3 class="todo-item-title">{$i["title"]}</h3>
-							<a class="todo-item-edit" href="{$conf->action_url}itemEdit/{$i['id_item']}"  title="Edit item">
+							<a class="todo-item-edit" href="{$conf->action_url}itemEdit/{$id_list}/{$i['id_item']}"  title="Edit item">
 								<i class="fa-solid fa-pen-to-square"></i>
 							</a>
 						</div>

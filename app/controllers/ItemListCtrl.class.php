@@ -6,7 +6,7 @@ use core\App;
 use core\Utils;
 use core\ParamUtils;
 use app\forms\AllSearchForm;
-use app\forms\TodoEditForm;
+use app\forms\ItemEditForm;
 
 class ItemListCtrl {
 
@@ -17,14 +17,14 @@ class ItemListCtrl {
     public function __construct() {
         //stworzenie potrzebnych obiektów
         $this->form = new AllSearchForm();
-        $this->list = new TodoEditForm();
+        $this->list = new ItemEditForm();
     }
 
     public function validate() {
         // 1. sprawdzenie, czy parametry zostały przekazane
         // - nie trzeba sprawdzać
         $this->form->search = ParamUtils::getFromRequest('sf_title');
-        $this->list->id = ParamUtils::getFromCleanURL(1, true, 'Błędne wywołanie aplikacji');
+        $this->list->id_list = ParamUtils::getFromCleanURL(1, true, 'Błędne wywołanie aplikacji');
 
         // 2. sprawdzenie poprawności przekazanych parametrów
         // - nie trzeba sprawdzać
@@ -40,7 +40,7 @@ class ItemListCtrl {
         $this->validate();
         // 2. Przygotowanie mapy z parametrami wyszukiwania (nazwa_kolumny => wartość)
         $search_params = []; //przygotowanie pustej struktury (aby była dostępna nawet gdy nie będzie zawierała wierszy)
-        $search_params['id_list'] = $this->list->id;
+        $search_params['id_list'] = $this->list->id_list;
         if (isset($this->form->search) && strlen($this->form->search) > 0) {
             $search_params['title[~]'] = '%'.$this->form->search.'%'; // dodanie symbolu % zastępuje dowolny ciąg znaków na końcu
         }
@@ -67,8 +67,7 @@ class ItemListCtrl {
 					"title",
 					"message",
 					"deadline",
-                ], $where);        
-            // ], ["id_list" => $this->form->id]);
+                ], $where);
         } catch (\PDOException $e) {
             Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
             if (App::getConf()->debug)
@@ -78,7 +77,7 @@ class ItemListCtrl {
         // 4. wygeneruj widok
         App::getSmarty()->assign('searchForm', $this->form); // dane formularza (wyszukiwania w tym wypadku)
         App::getSmarty()->assign('items', $this->records);  // lista rekordów z bazy danych
-        App::getSmarty()->assign('id_list', $this->list->id);  // lista rekordów z bazy danych
+        App::getSmarty()->assign('id_list', $this->list->id_list);  // id listy do wyświetlenia jej treści
         App::getSmarty()->display('ItemList.tpl');
     }
 
