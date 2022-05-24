@@ -49,7 +49,7 @@ class TodoEditCtrl {
     //validacja danych przed wyswietleniem do edycji
     public function validateEdit() {
         //pobierz parametry na potrzeby wyswietlenia danych do edycji
-        //z widoku listy osób (parametr jest wymagany)
+        //z widoku listy list (parametr jest wymagany)
         $this->form->id = ParamUtils::getFromCleanURL(1, true, 'Błędne wywołanie aplikacji');
         return !App::getMessages()->isError();
     }
@@ -60,14 +60,14 @@ class TodoEditCtrl {
 
     //wysiweltenie rekordu do edycji wskazanego parametrem 'id'
     public function action_todoEdit() {
-        // 1. walidacja id osoby do edycji
+        // 1. walidacja id listy do edycji
         if ($this->validateEdit()) {
             try {
-                // 2. odczyt z bazy danych osoby o podanym ID (tylko jednego rekordu)
+                // 2. odczyt z bazy danych listy o podanym ID (tylko jednego rekordu)
                 $record = App::getDB()->get("todolist", "*", [
                     "id_list" => $this->form->id
                 ]);
-                // 2.1 jeśli osoba istnieje to wpisz dane do obiektu formularza
+                // 2.1 jeśli lista istnieje to wpisz dane do obiektu formularza
                 $this->form->id = $record['id_list'];
 				$this->form->title = $record['title'];
 				$this->form->date = $record['date'];
@@ -83,7 +83,7 @@ class TodoEditCtrl {
     }
 
     public function action_todoDelete() {
-        // 1. walidacja id osoby do usuniecia
+        // 1. walidacja id listy do usuniecia
         if ($this->validateEdit()) {
 
             try {
@@ -99,7 +99,7 @@ class TodoEditCtrl {
             }
         }
 
-        // 3. Przekierowanie na stronę listy osób
+        // 3. Przekierowanie na stronę listy list
         App::getRouter()->forwardTo('todoList');
     }
 
@@ -109,15 +109,18 @@ class TodoEditCtrl {
         if ($this->validateSave()) {
             // 2. Zapis danych w bazie
             try {
-
                 //2.1 Nowy rekord
                 if ($this->form->id == '') {
                     //sprawdź liczebność rekordów - nie pozwalaj przekroczyć 20
                     $count = App::getDB()->count("todolist");
                     if ($count <= 20) {
+                        $user = App::getDB()->get("user", "*", [
+                            "login" => App::getConf()->roles['user']
+                        ]);
                         App::getDB()->insert("todolist", [
                             "title" => $this->form->title,
-							"date" => $this->form->date
+							"date" => $this->form->date,
+                            "id_user" => $user['id_user']
                         ]);
                     } else { //za dużo rekordów
                         // Gdy za dużo rekordów to pozostań na stronie
@@ -141,7 +144,7 @@ class TodoEditCtrl {
                     Utils::addErrorMessage($e->getMessage());
             }
 
-            // 3b. Po zapisie przejdź na stronę listy osób (w ramach tego samego żądania http)
+            // 3b. Po zapisie przejdź na stronę listy list (w ramach tego samego żądania http)
             App::getRouter()->forwardTo('todoList');
         } else {
             // 3c. Gdy błąd walidacji to pozostań na stronie

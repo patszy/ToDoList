@@ -18,7 +18,7 @@ Utils::addRoute('todoList',    'todoListCtrl',	);
 Utils::addRoute('todoNew',     'todoEditCtrl',	['user','admin']);
 Utils::addRoute('todoEdit',    'todoEditCtrl',	['user','admin']);
 Utils::addRoute('todoSave',    'todoEditCtrl',	['user','admin']);
-Utils::addRoute('todoDelete',  'todoEditCtrl',	['admin']);
+Utils::addRoute('todoDelete',  'todoEditCtrl',	['user','admin']);
 Utils::addRoute('userDelete',  'userEditCtrl',	['admin']);
 //Items
 Utils::addRoute('itemList',    'itemListCtrl',	['user','admin']);
