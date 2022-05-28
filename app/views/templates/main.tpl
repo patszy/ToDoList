@@ -9,6 +9,7 @@
 		integrity="sha384-nn4HPE8lTHyVtfCBi5yW9d20FjT8BJwUXyWZT9InLYax14RDjBj46LmSztkmNP9w" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 	<link rel="stylesheet" href="{$conf->app_url}/css/style.css">
+	<script type="text/javascript" src="{$conf->app_url}/js/functions.js"></script>
 </head>
 
 <body style="margin: 20px;">
@@ -21,7 +22,7 @@
 			{else}	
 				<a href="{$conf->action_root}loginShow" class="button button--menu">Zaloguj</a>
 			{/if}
-			{if !empty($conf->roles['user']) && $conf->roles['user']=='admin'}
+			{if !empty($conf->roles['role']) && $conf->roles['role']=='admin'}
 				<a href="{$conf->action_root}userList" class="button button--menu">Admin Panel</a>
 			{/if}
 		</div>

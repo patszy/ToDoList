@@ -20,26 +20,15 @@ class TodoEditCtrl {
     // Walidacja danych przed zapisem (nowe dane lub edycja).
     public function validateSave() {
         //0. Pobranie parametrów z walidacją
-        $this->form->id = ParamUtils::getFromRequest('id',true,'Błędne wywołanie aplikacji 1');
-		$this->form->title = ParamUtils::getFromRequest('title',true,'Błędne wywołanie aplikacji 2');
-		$this->form->date = ParamUtils::getFromRequest('deadline',true,'Błędne wywołanie aplikacji 4');
-
-        // if (App::getConf()->debug){
-
-        // }
-
-        if (App::getMessages()->isError()) return false;
+        $this->form->id = ParamUtils::getFromRequest('id',true,'App error: id.');
+		$this->form->title = ParamUtils::getFromRequest('title',true,'App error: title.');
+		$this->form->date = ParamUtils::getFromRequest('deadline',true,'App error: date.');
 
         // 1. sprawdzenie czy wartości wymagane nie są puste
-        if (empty(trim($this->form->title))) {
-            Utils::addErrorMessage('Wprowadź tytuł.');
-        }
-        if (empty(trim($this->form->date))) {
-            Utils::addErrorMessage('Wprowadź deadline.');
-        }
+        if (empty(trim($this->form->title))) Utils::addErrorMessage('Wprowadź tytuł.');
+        if (empty(trim($this->form->date))) Utils::addErrorMessage('Wprowadź deadline.');
 
-        if (App::getMessages()->isError())
-            return false;
+        if (App::getMessages()->isError())return false;
 
         // 2. sprawdzenie poprawności przekazanych parametrów
 
@@ -50,7 +39,7 @@ class TodoEditCtrl {
     public function validateEdit() {
         //pobierz parametry na potrzeby wyswietlenia danych do edycji
         //z widoku listy list (parametr jest wymagany)
-        $this->form->id = ParamUtils::getFromCleanURL(1, true, 'Błędne wywołanie aplikacji');
+        $this->form->id = ParamUtils::getFromCleanURL(1, true, 'App error: id.');
         return !App::getMessages()->isError();
     }
 
@@ -72,7 +61,7 @@ class TodoEditCtrl {
 				$this->form->title = $record['title'];
 				$this->form->date = $record['date'];
             } catch (\PDOException $e) {
-                Utils::addErrorMessage('Wystąpił błąd podczas odczytu rekordu');
+                Utils::addErrorMessage('Loading list error.');
                 if (App::getConf()->debug)
                     Utils::addErrorMessage($e->getMessage());
             }
@@ -91,9 +80,9 @@ class TodoEditCtrl {
                 App::getDB()->delete("todolist", [
                     "id_list" => $this->form->id
                 ]);
-                Utils::addInfoMessage('Pomyślnie usunięto rekord');
+                Utils::addInfoMessage('Successfully deleted.');
             } catch (\PDOException $e) {
-                Utils::addErrorMessage('Wystąpił błąd podczas usuwania rekordu');
+                Utils::addErrorMessage('Delete error.');
                 if (App::getConf()->debug)
                     Utils::addErrorMessage($e->getMessage());
             }
@@ -124,7 +113,7 @@ class TodoEditCtrl {
                         ]);
                     } else { //za dużo rekordów
                         // Gdy za dużo rekordów to pozostań na stronie
-                        Utils::addInfoMessage('Ograniczenie: Zbyt dużo rekordów. Aby dodać nowy usuń wybrany wpis.');
+                        Utils::addInfoMessage('Too much records in base. Delete few to add more.');
                         $this->generateView(); //pozostań na stronie edycji
                         exit(); //zakończ przetwarzanie, aby nie dodać wiadomości o pomyślnym zapisie danych
                     }
@@ -137,9 +126,9 @@ class TodoEditCtrl {
 						"id_list" => $this->form->id
 					]);
                 }
-                Utils::addInfoMessage('Pomyślnie zapisano rekord');
+                Utils::addInfoMessage('Successfully saved.');
             } catch (\PDOException $e) {
-                Utils::addErrorMessage('Wystąpił nieoczekiwany błąd podczas zapisu rekordu');
+                Utils::addErrorMessage('Save error.');
                 if (App::getConf()->debug)
                     Utils::addErrorMessage($e->getMessage());
             }

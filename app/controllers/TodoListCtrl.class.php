@@ -22,13 +22,10 @@ class TodoListCtrl {
         // - nie trzeba sprawdzać
         $this->form->search = ParamUtils::getFromRequest('sf_title');
 
-        // 2. sprawdzenie poprawności przekazanych parametrów
-        // - nie trzeba sprawdzać
-
         return !App::getMessages()->isError();
     }
 
-    public function action_todoList() {
+    public function load_data() {
         // 1. Walidacja danych formularza (z pobraniem)
         // - W tej aplikacji walidacja nie jest potrzebna, ponieważ nie wystąpią błedy podczas podawania nazwiska.
         //   Jednak pozostawiono ją, ponieważ gdyby uzytkownik wprowadzał np. datę, lub wartość numeryczną, to trzeba
@@ -37,17 +34,15 @@ class TodoListCtrl {
 
         // 2. Przygotowanie mapy z parametrami wyszukiwania (nazwa_kolumny => wartość)
         $search_params = []; //przygotowanie pustej struktury (aby była dostępna nawet gdy nie będzie zawierała wierszy)
-
-        if(isset(App::getConf()->roles['user'])) {
+        // przygotowanie parametru do wyszukania list zalogowanego usera
+        if(isset(App::getConf()->roles['role']) && isset(App::getConf()->roles['user'])) {
             try {
-                $user = App::getDB()->get("user", "*", [
-                    "login" => App::getConf()->roles['user']
-                ]);
+                $user = App::getDB()->get("user", "*", ["login" => App::getConf()->roles['user']]);
+                
                 $search_params['id_user'] = $user['id_user'];
             } catch (\PDOException $e) {
-                Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
-                if (App::getConf()->debug)
-                    Utils::addErrorMessage($e->getMessage());
+                Utils::addErrorMessage('Loading user data error.');
+                if (App::getConf()->debug)Utils::addErrorMessage($e->getMessage());
             }
         } 
         
@@ -71,20 +66,30 @@ class TodoListCtrl {
 
         try {
             $this->records = App::getDB()->select("todolist", [
-                    "id_list",
-					"title",
-					"date"
+                "id_list",
+                "title",
+                "date"
             ], $where);
         } catch (\PDOException $e) {
-            Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
-            if (App::getConf()->debug)
-                Utils::addErrorMessage($e->getMessage());
+            Utils::addErrorMessage('Loading list error.');
+            if (App::getConf()->debug) Utils::addErrorMessage($e->getMessage());
         }
 
-        // 4. wygeneruj widok
+    }
+
+    public function action_todoList() {
+        $this->load_data();
+        // Wygeneruj widok
         App::getSmarty()->assign('searchForm', $this->form); // dane formularza (wyszukiwania w tym wypadku)
         App::getSmarty()->assign('lists', $this->records);  // lista rekordów z bazy danych
         App::getSmarty()->display('TodoList.tpl');
     }
 
+    public function action_todoTable() {
+        $this->load_data();
+        // Wygeneruj widok samej tabeli
+        App::getSmarty()->assign('searchForm', $this->form); // dane formularza (wyszukiwania w tym wypadku)
+        App::getSmarty()->assign('lists', $this->records);  // lista rekordów z bazy danych
+        App::getSmarty()->display('TodoTable.tpl');
+    }
 }

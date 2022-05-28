@@ -24,7 +24,7 @@ class ItemListCtrl {
         // 1. sprawdzenie, czy parametry zostały przekazane
         // - nie trzeba sprawdzać
         $this->form->search = ParamUtils::getFromRequest('sf_title');
-        $this->list->id_list = ParamUtils::getFromCleanURL(1, true, 'Błędne wywołanie aplikacji');
+        $this->list->id_list = ParamUtils::getFromCleanURL(1, true, 'List id loading error.');
 
         // 2. sprawdzenie poprawności przekazanych parametrów
         // - nie trzeba sprawdzać
@@ -32,12 +32,13 @@ class ItemListCtrl {
         return !App::getMessages()->isError();
     }
 
-    public function action_itemList() {
+    public function load_data() {
         // 1. Walidacja danych formularza (z pobraniem)
         // - W tej aplikacji walidacja nie jest potrzebna, ponieważ nie wystąpią błedy podczas podawania nazwiska.
         //   Jednak pozostawiono ją, ponieważ gdyby uzytkownik wprowadzał np. datę, lub wartość numeryczną, to trzeba
         //   odpowiednio zareagować wyświetlając odpowiednią informację (poprzez obiekt wiadomości Messages)
         $this->validate();
+
         // 2. Przygotowanie mapy z parametrami wyszukiwania (nazwa_kolumny => wartość)
         $search_params = []; //przygotowanie pustej struktury (aby była dostępna nawet gdy nie będzie zawierała wierszy)
         $search_params['id_list'] = $this->list->id_list;
@@ -55,11 +56,6 @@ class ItemListCtrl {
         } else {
             $where = &$search_params;
         }
-        
-        //dodanie frazy sortującej po nazwisku
-        // $where ["AND"] = &$search_params;
-        // $where ["ORDER"] = "title";
-        //wykonanie zapytania
 
         try {
             $this->records = App::getDB()->select("todoitem", [
@@ -69,16 +65,26 @@ class ItemListCtrl {
 					"deadline",
                 ], $where);
         } catch (\PDOException $e) {
-            Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
-            if (App::getConf()->debug)
-                Utils::addErrorMessage($e->getMessage());
+            Utils::addErrorMessage('Loading list error.');
+            if (App::getConf()->debug) Utils::addErrorMessage($e->getMessage());
         }
+    }
 
-        // 4. wygeneruj widok
+    public function action_itemList() {
+        $this->load_data();
+        // Wygeneruj widok
         App::getSmarty()->assign('searchForm', $this->form); // dane formularza (wyszukiwania w tym wypadku)
         App::getSmarty()->assign('items', $this->records);  // lista rekordów z bazy danych
         App::getSmarty()->assign('id_list', $this->list->id_list);  // id listy do wyświetlenia jej treści
         App::getSmarty()->display('ItemList.tpl');
     }
 
+    public function action_itemTable() {
+        $this->load_data();
+        // Wygeneruj widok samej tabeli
+        App::getSmarty()->assign('searchForm', $this->form); // dane formularza (wyszukiwania w tym wypadku)
+        App::getSmarty()->assign('items', $this->records);  // lista rekordów z bazy danych
+        App::getSmarty()->assign('id_list', $this->list->id_list);  // id listy do wyświetlenia jej treści
+        App::getSmarty()->display('ItemTable.tpl');
+    }
 }

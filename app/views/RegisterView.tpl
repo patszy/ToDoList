@@ -12,7 +12,7 @@
 		<input class="todo-form-message" type="password" name="password2" title="Repeat password" placeholder="Repeat password"/>
 	</label>
 	
-	<div>
+	<div class="todo-menu-bar">
 		<button type="submit" class="button todo-form-button" title="Register">Register</button>
 		<a class="button todo-form-button" title="Login" href="{$conf->action_root}loginShow">Login</a>
 	</div> 

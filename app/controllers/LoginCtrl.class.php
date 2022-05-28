@@ -22,24 +22,19 @@ class LoginCtrl {
         $this->form->password = ParamUtils::getFromRequest('password');
 
         //nie ma sensu walidować dalej, gdy brak parametrów
-        if (!isset($this->form->login)) return false;
+        if (!isset($this->form->login) || !isset($this->form->login)) return false;
 
         try {
             // 2. odczyt z bazy danych osoby o podanym ID (tylko jednego rekordu)
-            $user = App::getDB()->get("user", "*", [
-                "login" => $this->form->login
-            ]);
+            $user = App::getDB()->get("user", "*", ["login" => $this->form->login]);
 
-            if (empty($this->form->login)) {
-                Utils::addErrorMessage('Nie podano loginu');
-            }
-            if (empty($this->form->password)) {
-                Utils::addErrorMessage('Nie podano hasła');
-            }
+            if (empty($this->form->login)) Utils::addErrorMessage('Wrong login.');
+            if (empty($this->form->password)) Utils::addErrorMessage('Wrong password.');
+            if (empty($user['login'])) Utils::addWarningMessage('Don\'t have acocunt? Register first.');
             
-            if (App::getMessages()->isError()) return false;
+            if (App::getMessages()->isError() || App::getMessages()->isWarning()) return false;
 
-            if($user['login'] == $this->form->login && $user['password'] == $this->form->password) {
+            if($user['login'] == $this->form->login && password_verify($this->form->password, $user['password'])) {
                 $user_role = App::getDB()->get("user_role", "*", [
                     "id_user" => $user['id_user']
                 ]);
@@ -47,11 +42,11 @@ class LoginCtrl {
                     "id_role" => $user_role['id_role']
                 ]);
                 RoleUtils::addRole($role['name']);
-            } else Utils::addErrorMessage('Niepoprawny login lub hasło.');
+                RoleUtils::addUser($user['login']);
+            } else Utils::addErrorMessage('Wrong login or password.');
         } catch (\PDOException $e) {
-            Utils::addErrorMessage('Wystąpił błąd podczas logowania.');
-            if (App::getConf()->debug)
-                Utils::addErrorMessage($e->getMessage());
+            Utils::addErrorMessage('Login error.');
+            if (App::getConf()->debug) Utils::addErrorMessage($e->getMessage());
         }
 
         if (App::getMessages()->isError()) return false;
@@ -66,7 +61,7 @@ class LoginCtrl {
     public function action_login() {
         if ($this->validate()) {
             //zalogowany => przekieruj na główną akcję (z przekazaniem messages przez sesję)
-            Utils::addErrorMessage('Poprawnie zalogowano do systemu');
+            Utils::addInfoMessage('Successfully logged in.');
             App::getRouter()->redirectTo("todoList");
         } else {
             //niezalogowany => pozostań na stronie logowania

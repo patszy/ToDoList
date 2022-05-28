@@ -9,7 +9,7 @@
 		<input class="todo-form-message" type="password" name="password" title="Password" placeholder="Password"/>
 	</label>
 	
-	<div>
+	<div class="todo-menu-bar">
 		<button type="submit" value="Login" class="button todo-form-button" title="Login">Login</button>
 		<a href="{$conf->action_root}registerShow" class="button todo-form-button" title="Register">Register</a>
 	</div> 

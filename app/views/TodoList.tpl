@@ -4,18 +4,17 @@
 
         <section class="todo-list-container">
             <header class="todo-list-header">
-
 				<h1 class="todo-list-title">
                     Lists
                 </h1>
 
-				{if !empty($conf->roles['user'])}
+				{if !empty($conf->roles['role'])}
 					<a class="button button--add" href="{$conf->action_root}todoNew">Add List</a>
 				{/if}
 				
 				
 				<div class="task-list-bar">	
-                	<form class="todo-list-search-form" action="{$conf->action_url}todoList">
+                	<form id="search-form" class="todo-list-search-form" onkeyup="ajaxPostForm('search-form','{$conf->action_url}todoTable','table'); return false;">
                     	<input type="search" placeholder="List Title" name="sf_title" value="{$searchForm->search}" class="todo-list-search">
 						<button type="submit" class="button button--search"   title="Search">
 							<i class="fa-solid fa-magnifying-glass"></i>
@@ -24,35 +23,9 @@
 				</div>
             </header>
 
-			{foreach $lists as $l}
-				{strip}
-					<div class="todo-item">
-						<div class="todo-item-bar">
-							{if !empty($conf->roles['user'])}
-								<a class="todo-item-show" href="{$conf->action_url}itemList/{$l['id_list']}" title="Show"><i class="fa-solid fa-eye"></i></a>
-							{/if}
-							
-							<h3 class="todo-item-date">{$l["date"]}</h3>
-
-							{if !empty($conf->roles['user'])}
-								<a class="todo-item-delete" href="{$conf->action_url}todoDelete/{$l['id_list']}" title="Delete">
-									<i class="fas fa-times-circle"></i>
-								</a>
-							{/if}
-							
-						</div>
-						<div class="todo-item-header">
-							<h3 class="todo-item-title">{$l["title"]}</h3>
-							{if !empty($conf->roles['user'])}
-								<a class="todo-item-edit" href="{$conf->action_url}todoEdit/{$l['id_list']}"  title="Edit">
-									<i class="fa-solid fa-pen-to-square"></i>
-								</a>
-							{/if}
-							
-						</div>						
-					</div>
-				{/strip}
-			{/foreach}
+			<div class="todo-list" id="table">
+				{include file="TodoTable.tpl"}
+			</div>
         </section>
 
 {include file='messages.tpl'}

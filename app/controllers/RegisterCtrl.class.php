@@ -23,57 +23,43 @@ class RegisterCtrl {
         $this->form->password2 = ParamUtils::getFromRequest('password2');
 
         //nie ma sensu walidować dalej, gdy brak parametrów
-        if (!isset($this->form->login)) return false;
+        if (!isset($this->form->login) || !isset($this->form->password) || !isset($this->form->password2)) return false;
 
         try {
-            $record = App::getDB()->get("user", "*", [
-                "login" => $this->form->login
-            ]);
+            $record = App::getDB()->get("user", "*", ["login" => $this->form->login]);
 
-            if(!empty($record['login'])) {
-                Utils::addErrorMessage('Login istnieje.');
-            }
-            if (empty($this->form->login)) {
-                Utils::addErrorMessage('Nie podano loginu.');
-            }
-            if (empty($this->form->password) || empty($this->form->password2)) {
-                Utils::addErrorMessage('Nie podano hasła.');
-            }
-            if($this->form->password != $this->form->password2) {
-                Utils::addErrorMessage('Hasła nie są indentyczne.');
-            }
+            if(!empty($record['login'])) Utils::addErrorMessage('User already exists.');
+            if (empty($this->form->login)) Utils::addErrorMessage('Empty login.');
+            if (empty($this->form->password) || empty($this->form->password2)) Utils::addErrorMessage('Empty password.');
+            if($this->form->password != $this->form->password2) Utils::addErrorMessage('Passwords are different.');
             
             if(!App::getMessages()->isError()) {
                 $role = App::getDB()->get("role", "*", [
                     "name" => 'user'
                 ]);
                 if(empty($role['name'])){
-                    Utils::addErrorMessage('Wystąpił błąd podczas odczytywania uprawnień.');
+                    Utils::addErrorMessage('Privileges error.');
                 } else {
                     App::getDB()->insert("user", [
                         "login" => $this->form->login,
-                        "password" => $this->form->password,
-                        "id_list" => '1'
+                        "password" => password_hash($this->form->password, PASSWORD_DEFAULT)
                     ]);
-                    Utils::addInfoMessage('Zarejestrowano pomyślnie.');
                     $record = App::getDB()->get("user", "*", [
-                        "name" => $this->form->login
+                        "login" => $this->form->login
                     ]);
                     App::getDB()->insert("user_role", [
                         "id_user" => $record['id_user'],
                         "id_role" => $role['id_role']
                     ]);
-                    Utils::addInfoMessage('Zarejestrowano pomyślnie.');
                 }  
             }
         } catch (\PDOException $e) {
-            Utils::addErrorMessage('Wystąpił błąd podczas rejestracji.');
+            Utils::addErrorMessage('Register error.');
             if (App::getConf()->debug)
                 Utils::addErrorMessage($e->getMessage());
         }
 
-        if (App::getMessages()->isError())
-            return false;
+        if (App::getMessages()->isError()) return false;
 
         return !App::getMessages()->isError();
     }
@@ -85,7 +71,7 @@ class RegisterCtrl {
     public function action_register() {
         if ($this->validate()) {
             //zalogowany => przekieruj na główną akcję (z przekazaniem messages przez sesję)
-            Utils::addErrorMessage('Poprawnie zarejestrowano do systemu');
+            Utils::addInfoMessage('Successfully registered.');
             App::getRouter()->redirectTo("login");
         } else {
             //niezalogowany => pozostań na stronie logowania
@@ -97,5 +83,4 @@ class RegisterCtrl {
         App::getSmarty()->assign('form', $this->form); // dane formularza do widoku
         App::getSmarty()->display('RegisterView.tpl');
     }
-
 }

@@ -8,7 +8,12 @@ namespace core;
 class RoleUtils {
 
     public static function addRole($role) {
-        App::getConf()->roles ['user'] = $role;
+        App::getConf()->roles ['role'] = $role;
+        $_SESSION['_amelia_roles'] = serialize(App::getConf()->roles);
+    }
+
+    public static function addUser($user) {
+        App::getConf()->roles ['user'] = $user;
         $_SESSION['_amelia_roles'] = serialize(App::getConf()->roles);
     }
 
@@ -20,7 +25,7 @@ class RoleUtils {
     }
 
     public static function inRole($role) {
-        if(isset(App::getConf()->roles['user'])) return (App::getConf()->roles['user'] == $role);
+        if(isset(App::getConf()->roles['role'])) return (App::getConf()->roles['role'] == $role);
         return false;
     }
 

@@ -29,7 +29,7 @@ main {
 
 .todo-form {
     box-shadow: 0 0 3px rgba(0,0,0, 1);
-    padding: 20px;
+    padding: 1.25em;
     color: var(--white);
     display: flex;
     flex-wrap: wrap;
@@ -37,54 +37,55 @@ main {
 }
 
 .todo-form-label {
-    font-size: 1rem;
+    font-size: 1.25em;
     flex-basis: 100%;
 }
 
 .todo-form-message {
-    padding: 20px;
+    padding: 1.25em;
     width: 100%;
     background-color: var(--ligh-bg);
     border: 1px solid var(--black);
-    margin: 20px 0;
+    margin: 1.25em 0;
     color: var(--white);
     resize: none;
     outline: none;
 }
 
+/* Button styles */
 .button {
     background: var(--blue);
     color: var(--white);
     border: 0;
-    border-radius: 10px;
+    border-radius: 0.625em;
     transition: .4s all;
     cursor: pointer;
     text-decoration: none;
     margin: 5px;
-    padding: 10px 20px;
+    padding: 0.625em 1.25em;
 }
 
 .button:hover {
     background: var(--green);
     transform: scale(.9);
-    box-shadow: inset 0 0 10px rgba(0,0,0, .5);
+    box-shadow: inset 0 0 0.625em rgba(0,0,0, .5);
 }
 
 .button--search{
     position: absolute;
     margin: 0;
     right: 0;
-    border-radius: 10px 0 0 10px;
+    border-radius: 0.625em 0 0 0.625em;
 }
 
 .button--search:hover{
-    padding: 10px 30px;
+    padding: 0.625em 30px;
     transform: none;
 }
 
 .button--add {
     display: block;
-    margin: 20px auto;
+    margin: 1.25em auto;
     width: 200px;
 }
 
@@ -92,11 +93,12 @@ main {
     border-radius: 0;
 }
 
+/* Todo list, item styles */
 .todo-list-container {
     background: var(--bg);
-    margin: 20px auto;
+    margin: 1.25em auto;
     box-shadow: 0 0 3px rgba(0,0,0, 1);
-    padding: 20px;
+    padding: 1.25em;
     color: var(--white);
 }
 
@@ -105,7 +107,7 @@ main {
 }
 
 .task-list-bar {
-    margin: 20px 0;
+    margin: 1.25em 0;
 }
 
 .todo-list-search-form {
@@ -119,14 +121,14 @@ main {
     outline: none;
     border: 1px solid var(--black);
     background-color: var(--ligh-bg);
-    padding: 10px;
+    padding: 0.625em;
     color: var(--white);
     width: 100%;
 }
 
 .todo-list-title,
 .todo-item-title {
-    font-size: 1rem;
+    font-size: 1.25em;
     text-transform: uppercase;
 }
 
@@ -135,10 +137,10 @@ main {
 }
 
 .todo-item {
-    margin-top: 20px;
-    padding: 0 10px;
+    margin-top: 1.25em;
+    padding: 0 0.625em;
     border-top: 1px dashed var(--gray);
-    border-radius: 10px;
+    border-radius: 0.625em;
 }
 
 .todo-item.--hide {
@@ -150,7 +152,7 @@ main {
 .todo-menu-bar {
     display: flex;
     align-items: center;
-    margin: 10px 0;
+    margin: 0.625em 0;
 }
 
 .todo-item-bar {
@@ -163,7 +165,7 @@ main {
 
 .todo-item-date {
     margin: 0;
-    font-size: 1rem;
+    font-size: 1.25em;
     font-weight: normal;
 }
 
@@ -171,7 +173,7 @@ main {
 .todo-item-edit,
 .todo-item-show  {
     color: var(--yellow);
-    font-size: 1.5rem;
+    font-size: 1.5em;
     cursor: pointer;
     transition: .4s all;
 }
@@ -181,7 +183,7 @@ main {
 }
 
 .todo-item-edit {
-    margin: 0 10px;
+    margin: 0 0.625em;
     text-decoration: none;
 }
 
@@ -201,66 +203,30 @@ main {
 
 .todo-item-text {
     color: var(--gray);
-    font-size: 0.9rem;
-}
-/* PAW styles */
-.messages { }
-.messages ul { list-style-type: none; padding: 0; }
-.msg{
-	border-radius: 0.5em;
-	padding: 1em;
-	margin-bottom: 0.5em;
-	box-shadow: 0.2em 0.2em 0.4em #ccc;
-}
-.error{	background-color: #f88; }
-.warning{ background-color: #fd2; }
-.info{ background-color: #afa; }
-
-.bottom-margin{
-	margin-bottom: 1em;
+    font-size: 0.9em;
 }
 
-.top-margin{
-	margin-top: 1em;
-}
-
-.button-success,
-.button-error,
-.button-warning,
-.button-secondary {
+/* Message styles */
+.messages ul {
     color: var(--white);
-    border-radius: 4px;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+    list-style-type: none;
+    padding: 0;
 }
 
-.button-success {
-    background: rgb(28, 184, 65); /* this is a green */
+.msg{
+	border-radius: 0.625em;
+	padding: 1.25em;
+	margin-bottom: 0.625em;
 }
 
-.button-error {
-    background: rgb(202, 60, 60); /* this is a maroon */
+.error{
+    background: var(--red);
 }
 
-.button-warning {
-    background: rgb(223, 117, 20); /* this is an orange */
+.warning{
+    background: var(--yellow)
 }
 
-.button-secondary {
-    background: rgb(66, 184, 221); /* this is a light blue */
-}
-
-.button-xsmall {
-    font-size: 70%;
-}
-
-.button-small {
-    font-size: 85%;
-}
-
-.button-large {
-    font-size: 110%;
-}
-
-.button-xlarge {
-    font-size: 125%;
+.info{
+    background: var(--green)
 }

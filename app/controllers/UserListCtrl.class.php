@@ -28,7 +28,7 @@ class UserListCtrl {
         return !App::getMessages()->isError();
     }
 
-    public function action_userList() {
+    public function load_data() {
         // 1. Walidacja danych formularza (z pobraniem)
         // - W tej aplikacji walidacja nie jest potrzebna, ponieważ nie wystąpią błedy podczas podawania nazwiska.
         //   Jednak pozostawiono ją, ponieważ gdyby uzytkownik wprowadzał np. datę, lub wartość numeryczną, to trzeba
@@ -61,15 +61,24 @@ class UserListCtrl {
 					"login",
             ], $where);
         } catch (\PDOException $e) {
-            Utils::addErrorMessage('Wystąpił błąd podczas pobierania rekordów');
-            if (App::getConf()->debug)
-                Utils::addErrorMessage($e->getMessage());
+            Utils::addErrorMessage('Loading error.');
+            if (App::getConf()->debug) Utils::addErrorMessage($e->getMessage());
         }
+    }
 
-        // 4. wygeneruj widok
+    public function action_userList() {
+        $this->load_data();
+        // Wygeneruj widok
         App::getSmarty()->assign('searchForm', $this->form); // dane formularza (wyszukiwania w tym wypadku)
         App::getSmarty()->assign('users', $this->records);  // lista rekordów z bazy danych
         App::getSmarty()->display('UserList.tpl');
     }
 
+    public function action_userTable() {
+        $this->load_data();
+        // Wygeneruj widok samej tabeli
+        App::getSmarty()->assign('searchForm', $this->form); // dane formularza (wyszukiwania w tym wypadku)
+        App::getSmarty()->assign('users', $this->records);  // lista rekordów z bazy danych
+        App::getSmarty()->display('UserTable.tpl');
+    }
 }

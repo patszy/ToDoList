@@ -9,30 +9,17 @@
                 </h1>
 				
 				<div class="task-list-bar">	
-                	<form class="todo-list-search-form" action="{$conf->action_url}userList">
+                	<form id="search-form" class="todo-list-search-form" onkeyup="ajaxPostForm('search-form','{$conf->action_url}userTable','table'); return false;">
                     	<input type="search" placeholder="User Login" name="sf_login" value="{$searchForm->search}" class="todo-list-search">
-						<button type="submit" class="button button--search"   title="Search user">
+						<button type="submit" class="button button--search" title="Search user">
 							<i class="fa-solid fa-magnifying-glass"></i>
 						</button>
                 	</form>
 				</div>
             </header>
 
-            <div class="todo-list" id="tab_people">
-				{foreach $users as $u}
-				{strip}
-					<div class="todo-item">
-						<div class="todo-item-bar">
-							<h3 class="todo-item-title">
-								Login: {$u["login"]}
-							</h3>
-							<a class="todo-item-delete" href="{$conf->action_url}userDelete/{$u['id_user']}" title="Delete user">
-								<i class="fas fa-times-circle"></i>
-							</a>
-						</div>						
-					</div>
-				{/strip}
-				{/foreach}
+            <div class="todo-list" id="table">
+				{include file="UserTable.tpl"}
             </div>
         </section>
 
